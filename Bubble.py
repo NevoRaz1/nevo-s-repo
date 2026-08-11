@@ -3,8 +3,8 @@ import math
 import BubblesGrid
 
 
-def create(center_x, center_y, color):
-    return {"color": color,
+def create(center_x, center_y, picture):
+    return {"picture": picture,
             "center_x": center_x,
             "center_y": center_y,
             "radius": consts.BUBBLE_RADIUS}
@@ -46,7 +46,7 @@ def calc_direction(angle):
 def pop(bubbles_grid, bubble_location):
     bubble_popped = bubbles_grid[bubble_location[0]][bubble_location[1]].copy()
     bubbles_grid[bubble_location[0]][bubble_location[1]][
-        "color"] = consts.NO_BUBBLE
+        "picture"] = consts.NO_BUBBLE
     return bubble_popped
 
 
@@ -72,7 +72,7 @@ def is_isolated_inner(bubbles_grid, bubble_location, locations_checked):
         if 0 <= new_row < len(bubbles_grid) and \
                 0 <= new_col < consts.BUBBLE_GRID_COLS and \
                 new_location not in locations_checked and \
-                bubbles_grid[new_row][new_col]["color"] != consts.NO_BUBBLE and \
+                bubbles_grid[new_row][new_col]["picture"] != consts.NO_BUBBLE and \
                 not is_isolated_inner(bubbles_grid, new_location,
                                       locations_checked):
             return False
@@ -95,7 +95,7 @@ def circleTouch(bubble1, bubble2):
 def should_stop(bubbles_grid, bullet_bubble):
     for row in range(len(bubbles_grid)):
         for bubble in bubbles_grid[row]:
-            if circleTouch(bullet_bubble, bubble) and bubble['color'] != consts.NO_BUBBLE:
+            if circleTouch(bullet_bubble, bubble) and bubble['picture'] != consts.NO_BUBBLE:
                 return True
     if bullet_bubble["center_y"] <= consts.BUBBLE_RADIUS:
         return True

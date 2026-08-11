@@ -24,24 +24,24 @@ def create_empty_row(row_number):
 
 
 def put_bubble_in_grid(bubble, location):
-    bubbles_grid[location[0]][location[1]]["color"] = bubble["color"]
+    bubbles_grid[location[0]][location[1]]["picture"] = bubble["picture"]
 
 
-def should_bubbles_pop(same_color_cluster):
-    return len(same_color_cluster) >= consts.MIN_CLUSTER_SIZE_TO_POP
+def should_bubbles_pop(same_picture_cluster):
+    return len(same_picture_cluster) >= consts.MIN_CLUSTER_SIZE_TO_POP
 
 
 # Returns a list of the locations in the bubbles grid that are a part of the
 # cluster
-def get_same_color_cluster(start_location, color, locations_checked):
+def get_same_picture_cluster(start_location, picture, locations_checked):
     start_row, start_col = start_location
     locations_checked.append(start_location)
     neighbors_directions = get_neighbors_directions(start_row)
 
-    if bubbles_grid[start_row][start_col]["color"] != color:
+    if bubbles_grid[start_row][start_col]["picture"] != picture:
         return []
 
-    same_color_cluster = [start_location]
+    same_picture_cluster = [start_location]
 
     for direction in neighbors_directions:
         new_row = start_row + direction[0]
@@ -51,11 +51,11 @@ def get_same_color_cluster(start_location, color, locations_checked):
         if 0 <= new_row < len(bubbles_grid) and \
                 0 <= new_col < consts.BUBBLE_GRID_COLS and \
                 new_location not in locations_checked:
-            same_color_cluster += get_same_color_cluster(new_location,
-                                                         color,
+            same_picture_cluster += get_same_picture_cluster(new_location,
+                                                         picture,
                                                          locations_checked)
 
-    return same_color_cluster
+    return same_picture_cluster
 
 
 def get_neighbors_directions(row_number):
@@ -95,7 +95,7 @@ def delete_last_empty_lines(num_of_lines_to_delete):
 
 def is_line_empty(line):
     for bubble in line:
-        if bubble["color"] != consts.NO_BUBBLE:
+        if bubble["picture"] != consts.NO_BUBBLE:
             return False
 
     return True
@@ -126,7 +126,7 @@ def set_one_empty_line():
 def create_bubble_row(row_index, row_start, row_length):
     return [Bubble.create(Bubble.calc_center_x(col, row_index, row_start),
                           Bubble.calc_center_y(row_index),
-                          random.choice(consts.bubble_colors)) for col in
+                          random.choice(consts.bubble_pictures)) for col in
             range(row_length)]
 
 
@@ -156,7 +156,7 @@ def get_length():
 def draw():
     for row in bubbles_grid:
         for bubble in row:
-            if bubble["color"] != consts.NO_BUBBLE:
+            if bubble["picture"] != consts.NO_BUBBLE:
                 Screen.draw_bubble(bubble)
 
 
@@ -168,7 +168,7 @@ def find_isolated_bubbles():
     for row in range(1, len(bubbles_grid)):
         for col in range(len(bubbles_grid[row])):
             bubble_location = (row, col)
-            if bubbles_grid[row][col]["color"] != consts.NO_BUBBLE and \
+            if bubbles_grid[row][col]["picture"] != consts.NO_BUBBLE and \
                     Bubble.is_isolated(bubbles_grid, bubble_location):
                 isolated_bubbles.append(bubble_location)
 
@@ -179,35 +179,35 @@ def find_isolated_bubbles():
 def is_lose():
     for row in range (len(bubbles_grid)):
         for col in range(len(bubbles_grid[0])):
-            if row==consts.NUM_OF_LINES_LOSE-1 and bubbles_grid[row][col]["color"] != consts.NO_BUBBLE:
+            if row==consts.NUM_OF_LINES_LOSE-1 and bubbles_grid[row][col]["picture"] != consts.NO_BUBBLE:
                 return True
     return False
 # ---------------------------------your code-----------------------------------
-def delete_color(bubble_colors):
+def delete_picture(bubble_pictures):
     from Stack import stack
-    colors_on_board=[]
+    pictures_on_board=[]
     if len(stack)==2:
-        for color in stack:
-            if color["color"]!=consts.NO_BUBBLE:
-                colors_on_board.append(color["color"][2])
+        for picture in stack:
+            if picture["picture"]!=consts.NO_BUBBLE:
+                pictures_on_board.append(picture["picture"][2])
 
     for row in range(len(bubbles_grid)):
         for col in range(len(bubbles_grid[row])):
-            current_color=bubbles_grid[row][col]['color']
-            if current_color!=consts.NO_BUBBLE:
-                colors_on_board.append(current_color)
-    for color in bubble_colors[:]:
-        if color not in colors_on_board:
-            bubble_colors.remove(color)
-    for color in colors_on_board:
-        if color not in bubble_colors :
-            bubble_colors.append(color)
+            current_picture=bubbles_grid[row][col]['picture']
+            if current_picture!=consts.NO_BUBBLE:
+                pictures_on_board.append(current_picture)
+    for picture in bubble_pictures[:]:
+        if picture not in pictures_on_board:
+            bubble_pictures.remove(picture)
+    for picture in pictures_on_board:
+        if picture not in bubble_pictures :
+            bubble_pictures.append(picture)
 
 # -----------------------------------------------------------------------------
 
 def find_bubble_location_in_grid(bullet_bubble):
     for i in range(consts.BUBBLE_GRID_COLS):
-        if Bubble.circleTouch(bullet_bubble, bubbles_grid[0][i]) and bubbles_grid[0][i]['color']==consts.NO_BUBBLE:
+        if Bubble.circleTouch(bullet_bubble, bubbles_grid[0][i]) and bubbles_grid[0][i]['picture']==consts.NO_BUBBLE:
             location=(0,i)
             return location
     smallest_gap=float(999999)
@@ -215,7 +215,7 @@ def find_bubble_location_in_grid(bullet_bubble):
     best_col=0
     for row in range(len(bubbles_grid)):
         for col in range(len(bubbles_grid[row])):
-            if bubbles_grid[row][col]["color"] == consts.NO_BUBBLE:
+            if bubbles_grid[row][col]["picture"] == consts.NO_BUBBLE:
                 dist = (bubbles_grid[row][col]["center_x"] - bullet_bubble["center_x"]) ** 2 + \
                           (bubbles_grid[row][col]["center_y"] - bullet_bubble["center_y"]) ** 2
                 if dist<smallest_gap:

@@ -40,13 +40,13 @@ def main():
                 new_bubble_location = BubblesGrid.find_bubble_location_in_grid(state["bullet_bubble"])
                 BubblesGrid.put_bubble_in_grid(state["bullet_bubble"], new_bubble_location)
 
-                same_color_cluster = BubblesGrid.get_same_color_cluster(
-                        new_bubble_location,state["bullet_bubble"]["color"],
+                same_picture_cluster = BubblesGrid.get_same_picture_cluster(
+                        new_bubble_location,state["bullet_bubble"]["picture"],
                         [])
 
-                if BubblesGrid.should_bubbles_pop(same_color_cluster):
+                if BubblesGrid.should_bubbles_pop(same_picture_cluster):
                     state["bubbles_popping"] = \
-                        BubblesGrid.pop_bubbles(same_color_cluster)
+                        BubblesGrid.pop_bubbles(same_picture_cluster)
 
                 # The counter counts only if bubbles weren't popped
                 else:
@@ -61,7 +61,7 @@ def main():
 
                 remove_isolated_bubbles()
                 BubblesGrid.set_one_empty_line()
-                remove_extinct_colors()
+                remove_extinct_pictures()
                 Stack.add_bubble(Stack.get_length())
                 if is_lose():
                     state["state"] = consts.LOSE_STATE
@@ -121,9 +121,9 @@ def remove_isolated_bubbles():
 # -----------------------------------------------------------------------------
 # ---------------------------------your code-----------------------------------
 # -----------------------------------------------------------------------------
-from BubblesGrid import delete_color
-def remove_extinct_colors():
-    delete_color(consts.bubble_colors)
+from BubblesGrid import delete_picture
+def remove_extinct_pictures():
+    delete_picture(consts.bubble_pictures)
 
 
 def is_lose():
@@ -132,7 +132,7 @@ def is_lose():
 
 
 def is_win():
-    if  not consts.bubble_colors :
+    if  not consts.bubble_pictures :
         return True
 
     # TODO: implement

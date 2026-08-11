@@ -15,10 +15,10 @@ def create(stack_size):
 
 
 def add_bubble(col):
-    if  consts.bubble_colors:
+    if  consts.bubble_pictures:
         bubble_x = Bubble.calc_center_x(col, row=0,
                                         row_start=consts.STACK_LOCATION[0])
-        stack.append(Bubble.create(bubble_x, consts.STACK_LOCATION[1],random.choice(consts.bubble_colors)))
+        stack.append(Bubble.create(bubble_x, consts.STACK_LOCATION[1],random.choice(consts.bubble_pictures)))
     else:
         bubble_x = Bubble.calc_center_x(col, row=0,
                                         row_start=consts.STACK_LOCATION[0])

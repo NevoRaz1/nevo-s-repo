@@ -10,7 +10,7 @@ screen = pygame.display.set_mode(
 
 def draw_bubble(bubble):
     try:
-        pygame.draw.circle(screen, bubble["color"],
+        pygame.draw.circle(screen, bubble["picture"],
                        center=(bubble["center_x"], bubble["center_y"]),
                        radius=bubble["radius"])
     except ValueError:
