@@ -34,11 +34,11 @@ def main():
 
             move_bubble()
 
-            if Bubble.should_stop(BubblesGrid.bubbles_grid,state["bullet_bubble"]):
+            if Bubble.should_stop(BubblesGrid.bubbles_grid, state["bullet_bubble"]):
                 state["is_bubble_fired"] = False
 
                 new_bubble_location = BubblesGrid.find_bubble_location_in_grid(state["bullet_bubble"])
-                BubblesGrid.put_bubble_in_grid(state["bullet_bubble"],new_bubble_location)
+                BubblesGrid.put_bubble_in_grid(state["bullet_bubble"], new_bubble_location)
 
                 same_color_cluster = BubblesGrid.get_same_color_cluster(
                         new_bubble_location,state["bullet_bubble"]["color"],
@@ -61,9 +61,8 @@ def main():
 
                 remove_isolated_bubbles()
                 BubblesGrid.set_one_empty_line()
-                remove_extinct_colors(consts.bubble_colors)
+                remove_extinct_colors()
                 Stack.add_bubble(Stack.get_length())
-
                 if is_lose():
                     state["state"] = consts.LOSE_STATE
                 elif is_win():
@@ -122,32 +121,20 @@ def remove_isolated_bubbles():
 # -----------------------------------------------------------------------------
 # ---------------------------------your code-----------------------------------
 # -----------------------------------------------------------------------------
-from BubblesGrid import how_many_of_which_color
-
-def remove_extinct_colors(bubble_colors):
-    red, green, blue, orange, violet = how_many_of_which_color(bubble_colors)
-    if red==0:
-        bubble_colors.remove(0)
-    if green==0:
-        bubble_colors.remove(1)
-    if blue==0:
-        bubble_colors.remove(2)
-    if orange==0:
-        bubble_colors.remove(3)
-    if violet==0:
-        bubble_colors.remove(4)
-
-
-    # TODO: implement
-    pass
+from BubblesGrid import delete_color
+def remove_extinct_colors():
+    delete_color(consts.bubble_colors)
 
 
 def is_lose():
-    # TODO: implement
-    pass
+    return BubblesGrid.is_lose()
+
 
 
 def is_win():
+    if  not consts.bubble_colors :
+        return True
+
     # TODO: implement
     pass
 

@@ -15,11 +15,14 @@ def create(stack_size):
 
 
 def add_bubble(col):
-    bubble_x = Bubble.calc_center_x(col, row=0,
-                                    row_start=consts.STACK_LOCATION[0])
-    stack.append(Bubble.create(bubble_x,
-                               consts.STACK_LOCATION[1],
-                               random.choice(consts.bubble_colors)))
+    if  consts.bubble_colors:
+        bubble_x = Bubble.calc_center_x(col, row=0,
+                                        row_start=consts.STACK_LOCATION[0])
+        stack.append(Bubble.create(bubble_x, consts.STACK_LOCATION[1],random.choice(consts.bubble_colors)))
+    else:
+        bubble_x = Bubble.calc_center_x(col, row=0,
+                                        row_start=consts.STACK_LOCATION[0])
+        stack.append(Bubble.create(bubble_x, consts.STACK_LOCATION[1], consts.NO_BUBBLE))
 
 
 def remove_first():
@@ -41,5 +44,7 @@ def draw():
         Screen.draw_bubble(bubble)
 
 # -----------------------------------------------------------------------------
+
+
 # ---------------------------------your code-----------------------------------
 # -----------------------------------------------------------------------------

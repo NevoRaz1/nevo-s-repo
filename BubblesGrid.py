@@ -176,36 +176,54 @@ def find_isolated_bubbles():
 
 
 # -----------------------------------------------------------------------------
+def is_lose():
+    for row in range (len(bubbles_grid)):
+        for col in range(len(bubbles_grid[0])):
+            if row==consts.NUM_OF_LINES_LOSE-1 and bubbles_grid[row][col]["color"] != consts.NO_BUBBLE:
+                return True
+    return False
 # ---------------------------------your code-----------------------------------
-def how_many_of_which_color(bubble_colors):
-    red = 0
-    green = 0
-    blue = 0
-    orange = 0
-    violet = 0
+def delete_color(bubble_colors):
+    from Stack import stack
+    colors_on_board=[]
+    if len(stack)==2:
+        for color in stack:
+            if color["color"]!=consts.NO_BUBBLE:
+                colors_on_board.append(color["color"][2])
+
     for row in range(len(bubbles_grid)):
         for col in range(len(bubbles_grid[row])):
-            if bubbles_grid[row][col]["color"] == bubble_colors[0]:
-                red += 1
-            elif bubbles_grid[row][col]["color"] == bubble_colors[1]:
-                green += 1
-            elif bubbles_grid[row][col]["color"] == bubble_colors[2]:
-                blue += 1
-            elif bubbles_grid[row][col]["color"] == bubble_colors[3]:
-                orange += 1
-            elif bubbles_grid[row][col]["color"] == bubble_colors[4]:
-                violet += 1
-    return red, green, blue, orange, violet
+            current_color=bubbles_grid[row][col]['color']
+            if current_color!=consts.NO_BUBBLE:
+                colors_on_board.append(current_color)
+    for color in bubble_colors[:]:
+        if color not in colors_on_board:
+            bubble_colors.remove(color)
+    for color in colors_on_board:
+        if color not in bubble_colors :
+            bubble_colors.append(color)
+
 # -----------------------------------------------------------------------------
 
-from Bubble import is_colliding_with_wall
 def find_bubble_location_in_grid(bullet_bubble):
+    for i in range(consts.BUBBLE_GRID_COLS):
+        if Bubble.circleTouch(bullet_bubble, bubbles_grid[0][i]) and bubbles_grid[0][i]['color']==consts.NO_BUBBLE:
+            location=(0,i)
+            return location
+    smallest_gap=float(999999)
+    best_row=0
+    best_col=0
     for row in range(len(bubbles_grid)):
         for col in range(len(bubbles_grid[row])):
-             if Bubble.circleTouch(bubbles_grid[row][col],bullet_bubble): #and bullet_bubble["color"] == consts.NO_BUBBLE:
-                location=(row+1,col)
-                return location
-
+            if bubbles_grid[row][col]["color"] == consts.NO_BUBBLE:
+                dist = (bubbles_grid[row][col]["center_x"] - bullet_bubble["center_x"]) ** 2 + \
+                          (bubbles_grid[row][col]["center_y"] - bullet_bubble["center_y"]) ** 2
+                if dist<smallest_gap:
+                    best_row=row
+                    best_col=col
+                    smallest_gap=dist
+    location=(best_row,best_col)
+    return location
 
     # TODO: implement
 

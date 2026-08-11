@@ -9,9 +9,12 @@ screen = pygame.display.set_mode(
 
 
 def draw_bubble(bubble):
-    pygame.draw.circle(screen, bubble["color"],
+    try:
+        pygame.draw.circle(screen, bubble["color"],
                        center=(bubble["center_x"], bubble["center_y"]),
                        radius=bubble["radius"])
+    except ValueError:
+        print("Game Over ")
 
 
 def draw_bubbles_popping(bubbles_popping):

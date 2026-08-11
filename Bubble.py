@@ -97,7 +97,8 @@ def should_stop(bubbles_grid, bullet_bubble):
         for bubble in bubbles_grid[row]:
             if circleTouch(bullet_bubble, bubble) and bubble['color'] != consts.NO_BUBBLE:
                 return True
-
+    if bullet_bubble["center_y"] <= consts.BUBBLE_RADIUS:
+        return True
+    return False
 
     # TODO: implement
-    pass
